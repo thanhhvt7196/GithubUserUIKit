@@ -1,0 +1,19 @@
+strings:
+  inputs:
+    - GithubUserUIKit/Resources/Localization/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: GithubUserUIKit/Resources/Generated/Strings.swift
+fonts:
+  inputs:
+    - GithubUserUIKit/Resources/Fonts
+  outputs:
+    - templateName: swift5
+      output: GithubUserUIKit/Resources/Generated/Fonts.swift
+xcassets:
+  - inputs:
+      - GithubUserUIKit/Resources/Assets.xcassets
+      - GithubUserUIKit/Resources/Colors.xcassets
+    outputs:
+      - templateName: swift5
+        output: GithubUserUIKit/Resources/Generated/Assets.swift
