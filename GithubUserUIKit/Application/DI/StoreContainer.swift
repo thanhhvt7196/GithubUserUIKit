@@ -24,7 +24,7 @@ struct StoreContainer: DIContainer {
         let container = Container()
         
         container.register(UserStore.self) { _ in
-            UserStoreImpl(collection: RealmStore<GithubUserRealm>(config: sharedRealmConfig))
+            UserStoreImpl(collection: RealmStore<GithubUserRealm>(config: sharedRealmConfig, label: "UserStore"))
         }
         .inObjectScope(.transient)
         
