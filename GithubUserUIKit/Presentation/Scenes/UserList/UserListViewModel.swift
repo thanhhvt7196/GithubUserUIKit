@@ -38,7 +38,7 @@ class UserListViewModel: ViewModel {
             .flatMapLatest { vm, _ in
                 vm.isLoading.accept(true)
                 vm.page = 0
-                return vm.useCase.fetchUsers(perPage: vm.itemPerPage, since: vm.page)
+                return vm.useCase.fetchUsers(perPage: vm.itemPerPage, since: vm.page * vm.itemPerPage)
                     .asObservable()
                     .materialize()
             }
@@ -67,7 +67,7 @@ class UserListViewModel: ViewModel {
             }
             .flatMapLatest { vm, _ in
                 vm.isLoadMore = true
-                return vm.useCase.fetchUsers(perPage: vm.itemPerPage, since: vm.page)
+                return vm.useCase.fetchUsers(perPage: vm.itemPerPage, since: vm.page * vm.itemPerPage)
                     .catchAndReturn([])
             }
             .subscribe(with: self, onNext: { vm, userList in
