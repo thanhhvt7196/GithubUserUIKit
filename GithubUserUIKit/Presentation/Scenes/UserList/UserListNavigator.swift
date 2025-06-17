@@ -20,9 +20,10 @@ struct UserListNavigatorImpl: UserListNavigator {
     }
     
     func showUserDetail(username: String) {
-        let service: UserService = ServiceContainer.get()
+        let repository: UserRepository = RepositoryContainer.get()
+        let useCase: UserDetailUseCase = UserDetailUsecaseImpl(repository: repository)
         let navigator = UserDetailNavigatorImpl(navigationController: navigationController)
-        let viewModel = UserDetailViewModel(userService: service, navigator: navigator, username: username)
+        let viewModel = UserDetailViewModel(usecase: useCase, navigator: navigator, username: username)
         let userDetailVC = UserDetailVC(vm: viewModel)
         navigationController.pushViewController(userDetailVC, animated: true)
     }

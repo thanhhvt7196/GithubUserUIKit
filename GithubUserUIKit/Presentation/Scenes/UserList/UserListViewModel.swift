@@ -74,7 +74,6 @@ class UserListViewModel: ViewModel {
                 guard !userList.isEmpty else {
                     return
                 }
-                // github API return some duplicated users, so we need to check if they already existed
                 var newUserList = vm.userList.value
                 userList.forEach { user in
                     if !newUserList.map({ $0.id }).contains(user.id) {

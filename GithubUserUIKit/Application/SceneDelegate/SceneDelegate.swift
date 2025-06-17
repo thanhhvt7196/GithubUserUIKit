@@ -20,9 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController()
-        let service: UserService = ServiceContainer.get()
-        let store: UserStore = StoreContainer.get()
-        let useCase = UserListUsecaseImpl(store: store, service: service)
+        let repository: UserRepository = RepositoryContainer.get()
+        let useCase = UserListUsecaseImpl(repository: repository)
         let rootVC = UserListVC(
             vm: .init(
                 useCase: useCase,

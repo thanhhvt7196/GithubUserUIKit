@@ -9,15 +9,15 @@ import RxSwift
 import RxCocoa
 
 class UserDetailViewModel: ViewModel {
-    private let userService: UserService
+    private let usecase: UserDetailUseCase
     fileprivate let userDetail = BehaviorRelay<GithubUserDetail?>(value: nil)
     private let navigator: UserDetailNavigator
     fileprivate let popAction = PublishRelay<Void>()
     
     private let username: String
     
-    init(userService: UserService, navigator: UserDetailNavigator, username: String) {
-        self.userService = userService
+    init(usecase: UserDetailUseCase, navigator: UserDetailNavigator, username: String) {
+        self.usecase = usecase
         self.navigator = navigator
         self.username = username
         super.init()
@@ -31,7 +31,7 @@ class UserDetailViewModel: ViewModel {
             .withUnretained(self)
             .flatMapLatest { vm, _ in
                 vm.isLoading.accept(true)
-                return vm.userService.getUserDetail(username: vm.username)
+                return vm.usecase.fetchUserDetail(username: vm.username)
                     .asObservable()
                     .materialize()
             }
