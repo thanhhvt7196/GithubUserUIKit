@@ -14,7 +14,8 @@ import XCTest
 final class UserDetailViewModelTests: XCTestCase {
     private var viewModel: UserDetailViewModel!
     private var mockUseCase: MockUserDetailUseCase!
-    private var mockUserService: MockUserService!
+    private var mockUserStore: MockUserStore!
+    private var mockUserRepository: MockUserRepository!
     private var mockAPIClient: MockAPIClient!
     private var mockNavigator: MockUserDetailNavigator!
     private var disposeBag: DisposeBag!
@@ -23,17 +24,19 @@ final class UserDetailViewModelTests: XCTestCase {
 
     override func setUp() async throws {
         mockAPIClient = MockAPIClient()
-        mockUserService = MockUserService(apiClient: mockAPIClient)
-        mockUseCase = MockUserDetailUseCase(userService: mockUserService)
+        mockUserStore = MockUserStore()
+        mockUserRepository = MockUserRepository(apiClient: mockAPIClient, store: mockUserStore)
+        mockUseCase = MockUserDetailUseCase(repository: mockUserRepository)
         mockNavigator = MockUserDetailNavigator()
         disposeBag = DisposeBag()
         scheduler = TestScheduler(initialClock: 0)
-        viewModel = UserDetailViewModel(userService: mockUserService, navigator: mockNavigator, username: testUsername)
+        viewModel = UserDetailViewModel(usecase: mockUseCase, navigator: mockNavigator, username: testUsername)
     }
     
     override func tearDown() async throws {
         mockAPIClient = nil
-        mockUserService = nil
+        mockUserStore = nil
+        mockUserRepository = nil
         mockUseCase = nil
         mockNavigator = nil
         disposeBag = nil

@@ -10,13 +10,13 @@ import Foundation
 @testable import GithubUserUIKit
 
 final class MockUserDetailUseCase: UserDetailUseCase {
-    private let userService: MockUserService
+    private let repository: MockUserRepository
     
-    init(userService: MockUserService) {
-        self.userService = userService
+    init(repository: MockUserRepository) {
+        self.repository = repository
     }
     
     func fetchUserDetail(username: String) -> Single<GithubUserDetail> {
-        return userService.getUserDetail(username: username)
+        return repository.getUserDetail(username: username)
     }
 }

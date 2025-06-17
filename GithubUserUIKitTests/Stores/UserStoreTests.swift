@@ -26,7 +26,7 @@ final class UserStoreTests: XCTestCase {
             }
             return config
         }()
-        userStore = UserStoreImpl(collection: RealmStore<GithubUserRealm>(config: config))
+        userStore = UserStoreImpl(collection: RealmStore<GithubUserRealm>(config: config, label: "UserStore"))
     }
     
     override func tearDown() {

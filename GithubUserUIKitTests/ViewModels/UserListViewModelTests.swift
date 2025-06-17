@@ -15,7 +15,7 @@ import RxTest
 final class UserListViewModelTests: XCTestCase {
     private var viewModel: UserListViewModel!
     private var mockUseCase: MockUserListUseCase!
-    private var mockUserService: MockUserService!
+    private var mockUserRepository: MockUserRepository!
     private var mockUserStore: MockUserStore!
     private var mockAPIClient: MockAPIClient!
     private var mockNavigator: MockUserListNavigator!
@@ -25,8 +25,8 @@ final class UserListViewModelTests: XCTestCase {
     override func setUp() async throws {
         mockAPIClient = MockAPIClient()
         mockUserStore = MockUserStore()
-        mockUserService = MockUserService(apiClient: mockAPIClient)
-        mockUseCase = MockUserListUseCase(userService: mockUserService, userStore: mockUserStore)
+        mockUserRepository = MockUserRepository(apiClient: mockAPIClient, store: mockUserStore)
+        mockUseCase = MockUserListUseCase(repository: mockUserRepository)
         mockNavigator = MockUserListNavigator()
         disposeBag = DisposeBag()
         scheduler = TestScheduler(initialClock: 0)
@@ -35,8 +35,8 @@ final class UserListViewModelTests: XCTestCase {
     
     override func tearDown() async throws {
         mockAPIClient = nil
-        mockUserService = nil
         mockUserStore = nil
+        mockUserRepository = nil
         mockUseCase = nil
         mockNavigator = nil
         disposeBag = nil

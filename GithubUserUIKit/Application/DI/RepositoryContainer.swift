@@ -28,8 +28,8 @@ struct RepositoryContainer: DIContainer {
         }
         .inObjectScope(.transient)
         
-        container.register(RealmStore<GithubUserRealm>.self) { _ in
-            RealmStore<GithubUserRealm>(config: sharedRealmConfig, label: "UserStore")
+        container.register(UserStore.self) { _ in
+            UserStoreImpl(collection: RealmStore<GithubUserRealm>(config: sharedRealmConfig, label: "UserStore"))
         }
         .inObjectScope(.container)
         
@@ -38,7 +38,7 @@ struct RepositoryContainer: DIContainer {
                 fatalError("Failed to resolve APIClient")
             }
             
-            guard let store = container.resolve(RealmStore<GithubUserRealm>.self) else {
+            guard let store = container.resolve(UserStore.self) else {
                 fatalError("Failed to resolve UserStore")
             }
             

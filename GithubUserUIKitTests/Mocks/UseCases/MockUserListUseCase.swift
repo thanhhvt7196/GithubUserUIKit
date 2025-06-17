@@ -10,28 +10,26 @@ import RxSwift
 @testable import GithubUserUIKit
 
 final class MockUserListUseCase: UserListUsecase {
-    private let userService: MockUserService
-    private let userStore: MockUserStore
+    private let repository: MockUserRepository
     
     
-    init(userService: MockUserService, userStore: MockUserStore) {
-        self.userService = userService
-        self.userStore = userStore
+    init(repository: MockUserRepository) {
+        self.repository = repository
     }
     
     func fetchUsers(perPage: Int, since: Int) -> Single<[GitHubUser]> {
-        return userService.getUserList(page: since, itemPerPage: perPage)
+        return repository.getUserList(page: since, itemPerPage: perPage)
     }
     
     func getAllUsersFromCache() -> [GitHubUser] {
-        return userStore.getAllUsers()
+        return repository.getAllUsers()
     }
     
     func cleanCache() {
-        return userStore.clean()
+        return repository.clean()
     }
     
     func saveCache(users: [GitHubUser]) {
-        return userStore.add(users: users)
+        return repository.add(users: users)
     }
 }

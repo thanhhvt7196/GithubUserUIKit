@@ -8,11 +8,11 @@
 import Foundation
 import RxSwift
 
-struct UserRepositoryImpl<C: Storeable>: UserRepository where C.Model == GitHubUser {
+struct UserRepositoryImpl: UserRepository {
     private let apiClient: APIClient
-    private let store: C
+    private let store: UserStore
     
-    init(apiClient: APIClient, store: C) {
+    init(apiClient: APIClient, store: UserStore) {
         self.apiClient = apiClient
         self.store = store
     }
@@ -26,15 +26,14 @@ struct UserRepositoryImpl<C: Storeable>: UserRepository where C.Model == GitHubU
     }
     
     func getAllUsers() -> [GitHubUser] {
-        let sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        return store.objects(nil, sort: sortDescriptors)
+        return store.getAllUsers()
     }
     
     func clean() {
-        store.add([], update: .cleanOnUpdate)
+        store.clean()
     }
     
     func add(users: [GitHubUser]) {
-        store.add(users, update: .update)
+        store.add(users: users)
     }
 }
