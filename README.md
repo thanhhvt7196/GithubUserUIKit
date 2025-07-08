@@ -37,7 +37,7 @@ As architecture we are using **[MVVM](https://medium.com/flawless-app-stories/ho
 - **Navigator:** Manages navigation and screen orchestration.
 
 
-### 2.2 Dependency Injection
+### 2.2.1 Dependency Injection
 
 All business logic and data dependencies should be injected. Use [Swinject](https://github.com/Swinject/Swinject) for flexible DI setup, especially for larger projects.
 

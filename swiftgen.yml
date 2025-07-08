@@ -13,7 +13,7 @@ fonts:
 xcassets:
   - inputs:
       - GithubUserUIKit/Resources/Assets.xcassets
-      - GithubUserUIKit/Resources/Colors.xcassets
+      - GithubUserKit/Resources/Colors.xcassets
     outputs:
       - templateName: swift5
         output: GithubUserUIKit/Resources/Generated/Assets.swift
