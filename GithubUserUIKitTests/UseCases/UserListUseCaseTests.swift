@@ -12,7 +12,7 @@ import RxBlocking
 @testable import GithubUserUIKit
 
 final class UserListUseCaseTests: XCTestCase {
-    var mockUserService: MockUserService!
+    var mockUserRepository: MockUserRepository!
     var mockUserStore: MockUserStore!
     var useCase: UserListUsecase!
     var mockAPIClient: MockAPIClient!
@@ -20,15 +20,15 @@ final class UserListUseCaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient()
-        mockUserService = MockUserService(apiClient: mockAPIClient)
         mockUserStore = MockUserStore()
-        useCase = UserListUsecaseImpl(store: mockUserStore, service: mockUserService)
+        mockUserRepository = MockUserRepository(apiClient: mockAPIClient, store: mockUserStore)
+        useCase = UserListUsecaseImpl(repository: mockUserRepository)
     }
     
     override func tearDown() {
         mockAPIClient = nil
-        mockUserService = nil
         mockUserStore = nil
+        mockUserRepository = nil
         useCase = nil
         super.tearDown()
     }

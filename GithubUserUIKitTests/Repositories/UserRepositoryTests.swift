@@ -1,5 +1,5 @@
 //
-//  UserServiceTests.swift
+//  UserRepositoryTests.swift
 //  GithubUserUIKit
 //
 //  Created by thanh tien on 9/6/25.
@@ -11,19 +11,22 @@ import RxSwift
 import RxBlocking
 @testable import GithubUserUIKit
 
-final class UserServiceTests: XCTestCase {
+final class UserRepositoryTests: XCTestCase {
     var mockAPIClient: MockAPIClient!
-    var userService: UserService!
+    var mockUserStore: MockUserStore!
+    var userRepository: UserRepository!
     
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient()
-        userService = UserServiceImpl(apiClient: mockAPIClient)
+        mockUserStore = MockUserStore()
+        userRepository = UserRepositoryImpl(apiClient: mockAPIClient, store: mockUserStore)
     }
     
     override func tearDown() {
         mockAPIClient = nil
-        userService = nil
+        mockUserStore = nil
+        userRepository = nil
         super.tearDown()
     }
     
@@ -31,7 +34,7 @@ final class UserServiceTests: XCTestCase {
         let mockUsers = GitHubUserDTO.mockList()
         mockAPIClient.mockResult = .success(mockUsers)
         
-        let result = try? userService.getUserList(page: 0, itemPerPage: 20).toBlocking().single()
+        let result = try? userRepository.getUserList(page: 0, itemPerPage: 20).toBlocking().single()
         
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.count, 5)
@@ -50,7 +53,7 @@ final class UserServiceTests: XCTestCase {
         mockAPIClient.mockResult = .failure(error)
         
         XCTAssertThrowsError(
-            try userService.getUserList(page: 0, itemPerPage: 20).toBlocking().single()
+            try userRepository.getUserList(page: 0, itemPerPage: 20).toBlocking().single()
         ) { thrown in
             let apiError = thrown as? APIError
             XCTAssertEqual(apiError?.message, error.message)
@@ -61,7 +64,7 @@ final class UserServiceTests: XCTestCase {
         let mockUserDetail = GithubUserDetailDTO.mock()
         mockAPIClient.mockResult = .success(mockUserDetail)
         
-        let result = try? userService.getUserDetail(username: "mojombo").toBlocking().single()
+        let result = try? userRepository.getUserDetail(username: "mojombo").toBlocking().single()
         
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.id, 1)
@@ -81,7 +84,7 @@ final class UserServiceTests: XCTestCase {
         mockAPIClient.mockResult = .failure(error)
         
         XCTAssertThrowsError(
-            try userService.getUserDetail(username: "fake user name").toBlocking().single()
+            try userRepository.getUserDetail(username: "fake user name").toBlocking().single()
         ) { thrown in
             let apiError = thrown as? APIError
             XCTAssertEqual(apiError?.message, "User not found")
